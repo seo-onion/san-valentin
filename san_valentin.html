@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿Quieres ser mi San Valentín?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #FFE4E1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .container {
+            text-align: center;
+            background-color: #FFF0F5;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 600px;
+        }
+        h1 {
+            color: #FF1493;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        p {
+            color: #FF69B4;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .btn {
+            background-color: #FF1493;
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.2rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            margin: 0 0.5rem;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            background-color: #FF69B4;
+        }
+        #noBtn {
+            background-color: #C71585;
+        }
+        #noBtn:hover {
+            background-color: #DB7093;
+        }
+        .hidden {
+            display: none;
+        }
+        #heart {
+            font-size: 5rem;
+            color: #FF1493;
+            animation: float 3s ease-in-out infinite;
+        }
+        .photo-container {
+            width: 300px;
+            height: 300px;
+            margin: 2rem auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid #FF1493;
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
+            transition: transform 0.3s ease;
+        }
+        .photo-container:hover {
+            transform: scale(1.05);
+        }
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .memory {
+            font-style: italic;
+            color: #C71585;
+            margin-top: 1rem;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #FF69B4;
+            transform: rotate(45deg);
+            animation: fall 3s linear infinite;
+        }
+        .heart::before,
+        .heart::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: #FF69B4;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .heart::before {
+            left: -10px;
+        }
+        .heart::after {
+            top: -10px;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(45deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts"></div>
+    <div class="container">
+        <h1>¿Quieres ser mi San Valentín?</h1>
+        <div class="photo-container">
+            <!-- Reemplaza 'URL_DE_TU_FOTO' con la URL de tu foto juntos -->
+            <img src="./foto.jpeg" alt="Nosotros" id="couple-photo">
+        </div>
+        <p> Hola, mi amor, perdón por la demora (pasaron algunas cositas), pero no quería que llegara el 14 de febrero sin una propuesta especial para ti. Quiero aprovechar esta oportunidad para recordarte lo increíblemente especial que eres para mí. Te amo de una forma que no puedes imaginar, y cada día a tu lado es un regalo que agradezco profundamente. Estoy contando los días para compartir este 14 de febrero juntitos, hacer que sea inolvidable y seguir construyendo recuerdos a tu lado. ¡Te adoro muchísimo! MUAK <3</p>
+        <div id="heart">❤️</div>
+        <div id="buttons">
+            <button id="yesBtn" class="btn">¡Sí, acepto!</button>
+            <button id="noBtn" class="btn">No</button>
+        </div>
+        <p id="response" class="hidden"></p>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const buttons = document.getElementById('buttons');
+        const response = document.getElementById('response');
+        const heart = document.getElementById('heart');
+        const heartsContainer = document.querySelector('.hearts');
+        const couplePhoto = document.getElementById('couple-photo');
+
+        yesBtn.addEventListener('click', () => {
+            buttons.classList.add('hidden');
+            response.textContent = "¡Me haces la persona más feliz del mundo! Te amo con todo mi corazón. ❤️";
+            response.classList.remove('hidden');
+            heart.style.fontSize = '8rem';
+            createHeartShower();
+            couplePhoto.style.animation = 'heartbeat 1s infinite';
+        });
+
+        noBtn.addEventListener('mouseover', (e) => {
+            const maxX = window.innerWidth - noBtn.offsetWidth;
+            const maxY = window.innerHeight - noBtn.offsetHeight;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
+        });
+
+        function createHeartShower() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDuration = `${Math.random() * 2 + 3}s`;
+                heartsContainer.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
+        }
+
+        // Create initial floating hearts
+        for (let i = 0; i < 10; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = `${Math.random() * 100}%`;
+            heart.style.top = `${Math.random() * 100}%`;
+            heart.style.animationDuration = `${Math.random() * 2 + 3}s`;
+            heartsContainer.appendChild(heart);
+        }
+
+        // Añadir efecto de zoom suave a la foto
+        couplePhoto.addEventListener('mouseover', () => {
+            couplePhoto.style.transform = 'scale(1.1)';
+        });
+        couplePhoto.addEventListener('mouseout', () => {
+            couplePhoto.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>
